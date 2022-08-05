@@ -4,6 +4,7 @@ import tkinter.font as tkFont
 from PIL import ImageTk, Image
 from ctypes import windll
 
+
 # import module for getting card information
 import search_engine as search
 
@@ -13,6 +14,14 @@ from config import *
 class App():
     def __init__(self) -> None:
         self.tk = tk.Tk()
+
+        # get system DPI then scale the fonts
+        dpi = self.tk.winfo_fpixels('1i')
+        ratio = 1
+        self.button_font_size = int(BUTTON_FONT_SIZE * ratio)
+        self.card_name_size = int(CARD_NAME_SIZE * ratio)
+        self.card_desc_size = int(CARD_DESC_SIZE * ratio)
+
         self.is_paused = True
         self.duel_mode = True
         self.configure_font()
@@ -32,7 +41,7 @@ class App():
         # button in control_area
         self.start_button = tk.Button(
             master=self.control_area,
-            font=(self.font, BUTTON_FONT_SIZE),
+            font=(self.font, self.button_font_size),
             text="开始",
             width=10,
             height=1,
@@ -42,7 +51,7 @@ class App():
         )
         self.mode_button = tk.Button(
             master=self.control_area,
-            font=(self.font, BUTTON_FONT_SIZE),
+            font=(self.font, self.button_font_size),
             text="切换至决斗",
             width=10,
             height=1,
@@ -52,7 +61,7 @@ class App():
         )
         self.exit_button = tk.Button(
             master=self.control_area,
-            font=(self.font, BUTTON_FONT_SIZE),
+            font=(self.font, self.button_font_size),
             text="退出",
             width=10,
             height=1,
@@ -75,13 +84,13 @@ class App():
         )
         self.card_name = tk.Label(
             master=self.display_area,
-            font=(self.font, CARD_NAME_SIZE, 'bold'),
+            font=(self.font, self.card_name_size, 'bold'),
             text="",
             fg=BLUE,
         )
         self.card_desc = tk.Message(
             master=self.display_area,
-            font=(self.font, CARD_DESC_SIZE),
+            font=(self.font, self.card_desc_size),
             text="",
             justify=tk.LEFT,
             # width in piels, -20 to leave room for special characters
