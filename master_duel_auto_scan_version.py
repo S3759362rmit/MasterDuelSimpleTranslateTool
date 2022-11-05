@@ -56,8 +56,8 @@ switch_hotkey = 'ctrl+s'
 deck_left_top = (64, 200)
 deck_right_bottom = (64+144, 200+210)
 # duel
-duel_left_top = (40, 208)
-duel_right_bottom = (40+168, 208+244)
+duel_left_top = (40, 225)
+duel_right_bottom = (40+156, 225+227)
 
 
 def cls():
@@ -374,8 +374,11 @@ def translate(type: int, cache: list, debug: bool = False, ygo_sql_ins=None):
             return
         data = cursor.fetchone()
         print(data)
-        card['name'] = data[0]
-        card['desc'] = data[1]
+        if data:
+            card['name'] = data[0]
+            card['desc'] = data[1]
+        
+        
     if not ygo_sql_ins:
         ygo_sql.close()
     print('匹配用时: %.6f 秒' % (end_time-start_time))
