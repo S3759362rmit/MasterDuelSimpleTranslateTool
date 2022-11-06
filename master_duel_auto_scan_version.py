@@ -377,8 +377,10 @@ def translate(type: int, cache: list, debug: bool = False, ygo_sql_ins=None):
         if data:
             card['name'] = data[0]
             card['desc'] = data[1]
-        
-        
+
+    # remove cards that cannot be found in db
+    results = [card for card in results if 'name' in card]
+
     if not ygo_sql_ins:
         ygo_sql.close()
     print('匹配用时: %.6f 秒' % (end_time-start_time))
@@ -386,15 +388,16 @@ def translate(type: int, cache: list, debug: bool = False, ygo_sql_ins=None):
 
     # pass first result to gui
     global g_card_show
-    g_card_show = results[0]
+    if results:
+        g_card_show = results[0]
 
-    for card in results:
-        if card['score'] < 0.93:
-            print("警告:相似度匹配过低,可能游戏卡图与缓存库的版本卡图不同或未知原因截图区域错误\n修改enable_debug查看截取图片信息分析原因\n")
-        print(
-            f"{card['name']}(密码:{card['card']},相似度:{card['score']})\n{card['desc']}\n")
-    print("-----------------------------------")
-    print(f"{switch_hotkey}切换检测卡组/决斗详细卡片信息,{pause_hotkey}暂停检测,{exit_hotkey}退出程序\n请确保您已经点开了目标卡片的详细信息!!!")
+        for card in results:
+            if card['score'] < 0.93:
+                print("警告:相似度匹配过低,可能游戏卡图与缓存库的版本卡图不同或未知原因截图区域错误\n修改enable_debug查看截取图片信息分析原因\n")
+            print(
+                f"{card['name']}(密码:{card['card']},相似度:{card['score']})\n{card['desc']}\n")
+        print("-----------------------------------")
+        print(f"{switch_hotkey}切换检测卡组/决斗详细卡片信息,{pause_hotkey}暂停检测,{exit_hotkey}退出程序\n请确保您已经点开了目标卡片的详细信息!!!")
 
 
 translate_type = 0

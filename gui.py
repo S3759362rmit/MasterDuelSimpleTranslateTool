@@ -89,7 +89,15 @@ class App():
                     self.card_pic.image = img
             except FileNotFoundError:
                 # if fail to load pic, show the name instead
-                self.card_name["text"] = search.get_card_name()
+                # if card_name is defined, app doesn't show pic from the begining
+                if hasattr(self, 'card_name'):
+                    self.card_name["text"] = search.get_card_name()
+                else:
+                # if just failed to load this pic, use the default
+                    with Image.open("pics/" + DEFAULT_PIC + ".jpg") as file:
+                        img = ImageTk.PhotoImage(file)
+                        self.card_pic.configure(image=img)
+                        self.card_pic.image = img                
 
             self.card_desc["text"] = search.get_card_desc()
 

@@ -41,7 +41,7 @@ def get_card_No():
 def get_card_name():
     """method to get card name
     """
-    if mda.g_card_show:
+    if mda.g_card_show and 'name' in mda.g_card_show.keys():
         return mda.g_card_show["name"]
     else:
         return None
